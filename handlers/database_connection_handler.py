@@ -1,21 +1,16 @@
 import os
 import psycopg2
 import pandas as pd
+import streamlit as st
 
 from psycopg2 import sql
 import pandas.io.sql as sqlio
-from streamlit import columns
-
-DATABASE_URL = os.getenv("DATABASE_URL")
-DATABASE_USER = os.getenv("DATABASE_USER")
-DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
-DATABASE_PORT = os.getenv("DATABASE_PORT")
 
 class DatabaseConnectionHandler:
     def __init__(self):
         self.conn = None
 
-    def connect(self, database):
+    def connect(self):
         """
         Connect to the database. Database will depend on env: dev or prod.
 
@@ -23,11 +18,11 @@ class DatabaseConnectionHandler:
             database (str): The database name.
         """
         self.conn = psycopg2.connect(
-            host = DATABASE_URL,
-            database = database,
-            user = DATABASE_USER,
-            password = DATABASE_PASSWORD,
-            port = DATABASE_PORT
+            host = st.secrets["DATABASE_HOST"],
+            database = st.secrets["DATABASE_NAME"],
+            user = st.secrets["DATABASE_USER"],
+            password = st.secrets["DATABASE_PASSWORD"],
+            port = st.secrets["DATABASE_PORT"]
         )
 
     def get_table(self, table_name):
