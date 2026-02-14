@@ -1,10 +1,15 @@
 import os
 import psycopg2
+import pandas as pd
 
-DATABASE_URL = os.environ["DATABASE_URL"]
-DATABASE_USER = os.environ["DATABASE_USER"]
-DATABASE_PASSWORD = os.environ["DATABASE_PASSWORD"]
-DATABASE_PORT = os.environ["DATABASE_PORT"]
+from psycopg2 import sql
+import pandas.io.sql as sqlio
+from streamlit import columns
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_USER = os.getenv("DATABASE_USER")
+DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
+DATABASE_PORT = os.getenv("DATABASE_PORT")
 
 class DatabaseConnectionHandler:
     def __init__(self):
@@ -33,12 +38,16 @@ class DatabaseConnectionHandler:
         # Start a cursor to execute queries
         cursor = self.conn.cursor()
 
-        # Prepare the query with placeholders
-        query = "SELECT * FROM %s;"
+        # Use identifier for table name to prevent SQL injection
+        query = sql.SQL("SELECT * FROM job_register.{}").format(
+            sql.Identifier(table_name)
+        )
 
-        # Execute the query with values
-        cursor.execute(query, (table_name))
+        # Execute the query
+        cursor.execute(query)
         results = cursor.fetchall()
+        columns = [column[0] for column in cursor.description]  # Get column names
+        result = [dict(zip(columns, row)) for row in results]
         cursor.close()
 
-        return results
+        return result

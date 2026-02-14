@@ -2,7 +2,6 @@ import streamlit as st
 
 from handlers.database_connection_handler import DatabaseConnectionHandler
 
-@st.cache_data
 def get_data():
     """
     Get the data from the database.
@@ -19,4 +18,4 @@ def get_data():
 
     return data
 
-get_data()
+st.dataframe(get_data())
