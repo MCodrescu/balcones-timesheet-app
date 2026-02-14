@@ -46,7 +46,11 @@ class DatabaseConnectionHandler:
         # Execute the query
         cursor.execute(query)
         results = cursor.fetchall()
-        columns = [column[0] for column in cursor.description]  # Get column names
+
+        # Get column names
+        columns = [column[0] for column in cursor.description]
+
+        # Create dictionary of results
         result = [dict(zip(columns, row)) for row in results]
         cursor.close()
 
