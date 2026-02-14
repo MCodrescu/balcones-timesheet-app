@@ -14,7 +14,7 @@ def get_data():
     db_handler.connect()
 
     # Get the data from the table
-    data = db_handler.get_table("mtcars")
+    data = db_handler.get_mtcars()
 
     return data
 

@@ -7,17 +7,13 @@ class DatabaseConnectionHandler:
 
     def connect(self):
         """
-        Connect to the database. Database will depend on env: dev or prod.
-
-        params:
-            env (str): The environment name.
-
+        Connect to the database. Connection details are stored in secrets.toml
         """
-        self.conn = st.connection("balcones", type = "sql")
+        self.conn = st.connection("sql")
 
-    def get_table(self, table_name):
+    def get_mtcars(self):
         """
-        Get the data from a table.
+        Get the data from the mtcars table.
         """
-        result = self.conn.query(f"SELECT * FROM job_register.{table_name}")
+        result = self.conn.query(f"SELECT * FROM job_register.mtcars")
         return result
