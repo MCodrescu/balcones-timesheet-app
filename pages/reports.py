@@ -11,10 +11,10 @@ def get_data():
     db_handler = DatabaseConnectionHandler()
 
     # Connect to the database
-    db_handler.connect("job-register-dev")
+    db_handler.connect()
 
     # Get the data from the table
-    data = db_handler.get_table("MTCARS")
+    data = db_handler.get_table("mtcars")
 
     return data
 
