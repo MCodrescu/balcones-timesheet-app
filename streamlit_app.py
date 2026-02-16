@@ -7,7 +7,7 @@ pages = {
         st.Page("pages/timesheet_upload.py", title="Upload")
     ],
     "Reports": [
-        st.Page("pages/reports.py", title="Job Report")
+        st.Page("pages/job_report.py", title="Job Report")
     ]
 }
 
