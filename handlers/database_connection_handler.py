@@ -66,7 +66,7 @@ class DatabaseConnectionHandler:
         """
         Get all job numbers from the database.
         """
-        result = self.conn.query(f"SELECT job_number FROM job_register.jobs")
+        result = self.conn.query(f"SELECT job_number FROM job_register.jobs", ttl = 0)
         return result["job_number"].to_list()
     
 
