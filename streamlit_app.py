@@ -10,17 +10,7 @@ def login_screen():
 if not st.user.is_logged_in:
     login_screen()
 else:
-    pages = {
-        "Timesheet": [
-            st.Page("pages/timesheet_upload.py", title="Upload")
-        ],
-        "Reports": [
-            st.Page("pages/reports.py", title="Reports")
-        ],
-    }
-
-    pg = st.navigation(pages, position="top")
-    pg.run()
+    st.switch_page("pages/home.py")
 
 st.button("Log out", on_click=st.logout)
 
