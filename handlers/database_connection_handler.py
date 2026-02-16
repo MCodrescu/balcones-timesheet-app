@@ -34,6 +34,24 @@ class DatabaseConnectionHandler:
             else:
                 session.commit()
 
+    def get_employee_time_entry_id(self, employee_id, job_number, work_date, hours_worked):
+        """
+        Get the employee time entry id for a given employee, job, and date.
+
+        params:
+            employee_id (int): The employee id.
+            job_number (str): The job number.
+            work_date (date): The date of the work.
+            hours_worked (int): The number of hours worked.
+        """
+        with self.conn.session as session:
+            result = session.execute(
+                text("SELECT time_entry_id FROM job_register.employee_time WHERE employee_id = :employee_id AND job_number = :job_number AND work_date = :work_date AND hours_worked = :hours_worked"),
+                {"employee_id": employee_id, "job_number": job_number, "work_date": work_date, "hours_worked": hours_worked}
+            ).fetchone()
+
+        return result[0] if result else None
+
     def insert_employee_time(self, employee_id, job_number, work_date, hours_worked, test = False):
         """
         Insert a new employee time entry into the database.

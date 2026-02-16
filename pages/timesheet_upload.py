@@ -23,6 +23,19 @@ if timesheet:
         database_connection_handler = DatabaseConnectionHandler()
         database_connection_handler.connect()
 
+        employee_id = database_connection_handler.get_employee_id(data_preview[0]["employee_name"])
+
+        # Check if the timesheet data is already loaded
+        employee_time_entry_id = database_connection_handler.get_employee_time_entry_id(
+            employee_id = employee_id,
+            job_number = data_preview[0]["job_number"],
+            work_date = data_preview[0]["work_date"],
+            hours_worked = data_preview[0]["hours_worked"]
+        )
+
+        if employee_time_entry_id:
+            st.warning("Some of this timesheet data appears to already be loaded in the database.")
+
         all_job_numbers = database_connection_handler.get_all_jobs(cache_seconds=0)
 
         # Validate that all job numbers in the timesheet exist in the database
