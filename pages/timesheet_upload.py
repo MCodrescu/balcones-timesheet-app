@@ -25,9 +25,11 @@ if timesheet:
                 st.error(f"Job number {job_number} does not exist in the database. Please add it before continuing.")
                 st.stop()
             
-            else:
+        submit_timesheet_button = st.button("Submit Timesheet")
 
-                if st.button("Submit Timesheet"):
-                    
-                    database_connection_handler.load_timesheet_data(data_preview, test = True)
-                    st.success("Timesheet data loaded into database!")
+        if submit_timesheet_button:
+            
+            database_connection_handler.load_timesheet_data(data_preview, test = True)
+            st.success("Timesheet data loaded into database!")
+
+                

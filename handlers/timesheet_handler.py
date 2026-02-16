@@ -35,7 +35,7 @@ class TimesheetHandler:
                 .dropna(inplace=False)
                 .query("hours_worked > 0", inplace=False)
                 .reset_index(drop=True, inplace=False)
-                .assign(work_date = work_date)
+                .assign(work_date = work_date.date())
                 .assign(employee_name = employee_name)
             )
 
