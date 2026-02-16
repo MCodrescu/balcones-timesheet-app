@@ -1,5 +1,7 @@
 import streamlit as st
 
+from sqlalchemy.sql import text
+
 
 class DatabaseConnectionHandler:
     def __init__(self):
@@ -18,6 +20,14 @@ class DatabaseConnectionHandler:
         result = self.conn.query(f"SELECT * FROM job_register.mtcars")
         return result
     
+    def get_all_jobs(self):
+        """
+        Get all job numbers from the database.
+        """
+        result = self.conn.query(f"SELECT job_number FROM job_register.jobs")
+        return result["job_number"].to_list()
+    
+
     def get_employee_id(self, employee_name):
         """
         Get the employee id from the employee name.
@@ -28,7 +38,7 @@ class DatabaseConnectionHandler:
 
         with self.conn.session as session:
             result = session.execute(
-                "SELECT employee_id FROM job_register.employees WHERE employee_name = :employee_name",
+                text("SELECT employee_id FROM job_register.employees WHERE employee_name = :employee_name"),
                 {"employee_name": employee_name}
             ).fetchone()
 
@@ -50,7 +60,7 @@ class DatabaseConnectionHandler:
             session.begin()
             for row in timesheet_data:
                 session.execute(
-                    "INSERT INTO job_register.employee_time (employee_id, job_number, work_date, hours_worked) VALUES (:employee_id, :job_number, :work_date, :hours_worked)",
+                    text("INSERT INTO job_register.employee_time (employee_id, job_number, work_date, hours_worked) VALUES (:employee_id, :job_number, :work_date, :hours_worked)"),
                     {"employee_id": employee_id, "job_number": row["job_number"], "work_date": row["work_date"], "hours_worked": row["hours_worked"]}
                 )
             if test:
