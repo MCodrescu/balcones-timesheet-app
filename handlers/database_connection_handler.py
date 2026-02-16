@@ -87,6 +87,12 @@ class DatabaseConnectionHandler:
         result = self.conn.query(f"SELECT job_number FROM job_register.jobs", ttl = cache_seconds)
         return result["job_number"].to_list()
     
+    def get_all_employees(self, cache_seconds = None):
+        """
+        Get all employee names from the database.
+        """
+        result = self.conn.query(f"SELECT employee_id, employee_name FROM job_register.employees", ttl = cache_seconds)
+        return result
 
     def get_employee_id(self, employee_name):
         """
