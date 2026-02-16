@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.title("Balcones")
+st.title("Balcones Timesheet Application")
 
 pages = {
     "Timesheet": [
