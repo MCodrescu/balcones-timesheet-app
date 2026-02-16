@@ -13,6 +13,48 @@ class DatabaseConnectionHandler:
         """
         self.conn = st.connection("sql")
 
+    def insert_job(self, job_number, job_name, client, job_link, test = False):
+        """
+        Insert a new job into the database.
+
+        params:
+            job_number (str): The job number.
+            job_name (str): The job name.
+            client (str): The client name.
+            job_link (str): A link to the job details.
+            test (bool): If True, the transaction will be rolled back instead of committed.
+        """
+        with self.conn.session as session:
+            session.execute(
+                text("INSERT INTO job_register.jobs (job_number, job_name, client, job_link) VALUES (:job_number, :job_name, :client, :job_link)"),
+                {"job_number": job_number, "job_name": job_name, "client": client, "job_link": job_link}
+            )
+            if test:
+                session.rollback()
+            else:
+                session.commit()
+
+    def insert_employee_time(self, employee_id, job_number, work_date, hours_worked, test = False):
+        """
+        Insert a new employee time entry into the database.
+
+        params:
+            employee_id (int): The employee id.
+            job_number (str): The job number.
+            work_date (date): The date of the work.
+            hours_worked (float): The number of hours worked.
+            test (bool): If True, the transaction will be rolled back instead of committed.
+        """
+        with self.conn.session as session:
+            session.execute(
+                text("INSERT INTO job_register.employee_time (employee_id, job_number, work_date, hours_worked) VALUES (:employee_id, :job_number, :work_date, :hours_worked)"),
+                {"employee_id": employee_id, "job_number": job_number, "work_date": work_date, "hours_worked": hours_worked}
+            )
+            if test:
+                session.rollback()
+            else:
+                session.commit()
+
     def get_mtcars(self):
         """
         Get the data from the mtcars table.
@@ -56,15 +98,12 @@ class DatabaseConnectionHandler:
         
         employee_id = self.get_employee_id(timesheet_data[0]["employee_name"])
 
-        with self.conn.session as session:
-            session.begin()
-            for row in timesheet_data:
-                session.execute(
-                    text("INSERT INTO job_register.employee_time (employee_id, job_number, work_date, hours_worked) VALUES (:employee_id, :job_number, :work_date, :hours_worked)"),
-                    {"employee_id": employee_id, "job_number": row["job_number"], "work_date": row["work_date"], "hours_worked": row["hours_worked"]}
-                )
-            if test:
-                session.rollback()
-            else:
-                session.commit()
+        for row in timesheet_data:
+            self.insert_employee_time(
+                employee_id = employee_id,
+                job_number = row["job_number"],
+                work_date = row["work_date"],
+                hours_worked = row["hours_worked"],
+                test = test
+            )
             
