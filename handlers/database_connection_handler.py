@@ -84,7 +84,7 @@ class DatabaseConnectionHandler:
         """
         Get all job numbers from the database.
         """
-        result = self.conn.query(f"SELECT job_number FROM job_register.jobs", ttl = cache_seconds)
+        result = self.conn.query(f"SELECT job_number FROM job_register.jobs INNER JOIN job_register.employee_time USING (job_number) GROUP BY job_number ORDER BY SUM(hours_worked) DESC", ttl = cache_seconds)
         return result["job_number"].to_list()
     
     def get_all_employees(self, cache_seconds = None):

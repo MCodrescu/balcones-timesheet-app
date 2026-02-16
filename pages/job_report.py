@@ -21,7 +21,7 @@ with open("sql/job_report.sql", "r") as f:
 all_job_numbers = db_handler.get_all_jobs()
 
 job_numbers = st.multiselect("Select Job Numbers", options = all_job_numbers)
-start_date = st.date_input("Start Date", value = date.today() - timedelta(days=30))
+start_date = st.date_input("Start Date", value = date.today() - timedelta(days=14))
 end_date = st.date_input("End Date", value = date.today())
 submit_report = st.button("Submit Report")
 
