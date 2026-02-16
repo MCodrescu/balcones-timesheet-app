@@ -36,7 +36,7 @@ if timesheet:
         if employee_time_entry_id:
             st.warning("Some of this timesheet data appears to already be loaded in the database.")
 
-        all_job_numbers = database_connection_handler.get_all_jobs(cache_seconds=0)
+        all_job_numbers = database_connection_handler.get_all_jobs(cache_seconds=1)
 
         # Validate that all job numbers in the timesheet exist in the database
         for job_number in distinct_job_numbers:
