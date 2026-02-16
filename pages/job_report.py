@@ -6,7 +6,6 @@ from handlers.database_connection_handler import DatabaseConnectionHandler
 
 # Header
 st.header("Job Report")
-st.text("Generate a report of employee hours worked on selected jobs within a specified date range.")
 
 # Create a database connection handler
 db_handler = DatabaseConnectionHandler()
