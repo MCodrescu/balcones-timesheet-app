@@ -62,11 +62,11 @@ class DatabaseConnectionHandler:
         result = self.conn.query(f"SELECT * FROM job_register.mtcars")
         return result
     
-    def get_all_jobs(self):
+    def get_all_jobs(self, cache_seconds = None):
         """
         Get all job numbers from the database.
         """
-        result = self.conn.query(f"SELECT job_number FROM job_register.jobs", ttl = 0)
+        result = self.conn.query(f"SELECT job_number FROM job_register.jobs", ttl = cache_seconds)
         return result["job_number"].to_list()
     
 
@@ -106,4 +106,15 @@ class DatabaseConnectionHandler:
                 hours_worked = row["hours_worked"],
                 test = test
             )
+
+    def get_query(self, query, params):
+        """
+        Get the data from the database based on a query and parameters.
+
+        params:
+            query (str): The SQL query to execute. Should use named parameters (e.g. :param_name).
+            params (dict): A dictionary of parameters to pass to the query. Keys should match the named parameters in the query.
+        """
+        result = self.conn.query(sql = query, params = params)
+        return result
             
